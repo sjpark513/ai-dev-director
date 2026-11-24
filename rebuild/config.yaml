@@ -1,0 +1,28 @@
+# AI DEV DIRECTOR (rebuild) 설정 파일.
+# 1~2단계에서는 역할·타임아웃·안전 상한만 읽습니다. 이후 단계가 섹션을 추가합니다.
+# 모르는 키를 적으면 오타로 보고 시작 단계에서 오류를 냅니다(원본은 조용히 무시했습니다).
+
+head:
+  provider: claude
+  executable: null        # null이면 PATH와 표준 설치 위치에서 자동으로 찾습니다
+
+builder:
+  provider: codex
+  executable: null
+
+reviewer:
+  provider: claude
+  executable: null
+
+timeouts:                 # 초 단위
+  head: 300
+  builder: 600
+  reviewer: 300
+  no_output: 180          # 이 시간 동안 출력이 한 줄도 없으면 멈춘 것으로 봅니다
+
+safety:
+  max_files_changed: 15
+  max_diff_lines: 1500
+
+verification:
+  test_command: "python -m pytest -q"

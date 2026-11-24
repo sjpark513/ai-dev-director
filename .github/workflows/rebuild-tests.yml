@@ -1,0 +1,26 @@
+name: rebuild tests
+
+on:
+  push:
+    paths: ["rebuild/**", ".github/workflows/rebuild-tests.yml"]
+  pull_request:
+    paths: ["rebuild/**", ".github/workflows/rebuild-tests.yml"]
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+        python: ["3.9", "3.13"]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: rebuild
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -r requirements.txt
+      - run: python -m pytest -v
